@@ -61,7 +61,7 @@ ${issue.body?.substring(0, 200) || ''}`;
   if (event === 'check_run') {
     const { check_run, repository } = payload;
 
-    if (check_run.conclusion === 'failure' && check_run.action === 'completed') {
+    if (check_run.conclusion === 'failure' && payload.action === 'completed') {
       const checkKey = `${repository.full_name}-${check_run.id}`;
 
       const msg = `❌ *PR Check Failed*
