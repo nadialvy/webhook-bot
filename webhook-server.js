@@ -26,6 +26,11 @@ app.post('/webhook', async (req, res) => {
   const event = req.headers['x-github-event'];
   const payload = req.body;
 
+  console.log('EVENT:', event);
+  console.log('ACTION:', payload.action);
+  console.log('CONCLUSION:', payload.check_run?.conclusion);
+
+
   // Notif PR comment
   if (event === 'issue_comment' && payload.issue?.pull_request) {
     const { comment, issue, repository, sender } = payload;
