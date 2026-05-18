@@ -23,7 +23,7 @@ ${comment.body}`;
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chat_id: ${process.env.CHAT_ID},
+        chat_id: `${process.env.CHAT_ID}`,
         text: msg,
         parse_mode: 'Markdown'
       })
