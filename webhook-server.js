@@ -57,41 +57,31 @@ ${issue.body?.substring(0, 200) || ''}`;
   }
 
   // Notif PR check gagal
+  // Notif PR check gagal
   if (event === 'check_run') {
     const { check_run, repository } = payload;
-    const pr = check_run.pull_requests?.[0];
 
-    if (
-      check_run.conclusion === 'failure' &&
-      pr &&
-      check_run.pull_requests.some(pr =>
-        pr.head?.user?.login === GITHUB_USERNAME ||
-        check_run.sender?.login === GITHUB_USERNAME
-      )
-    ) {
+    if (check_run.conclusion === 'failure' && check_run.action === 'completed') {
       const checkKey = `${repository.full_name}-${check_run.id}`;
 
-      // Kirim notif langsung
       const msg = `❌ *PR Check Failed*
 📌 Check: ${check_run.name}
-🔗 PR: [${pr.url}](${pr.url})
+🔗 [View logs](${check_run.html_url})
 📁 Repo: ${repository.full_name}
 
 Fix within 1 hour or you'll get a reminder!`;
 
       await sendTelegram(msg);
 
-      // Simpan ke memory buat reminder
       failedChecks.set(checkKey, {
         checkName: check_run.name,
-        prUrl: pr.url,
+        prUrl: check_run.html_url,
         repo: repository.full_name,
         failedAt: Date.now(),
         reminded: false
       });
     }
 
-    // Kalau check udah fixed, hapus dari memory
     if (check_run.conclusion === 'success') {
       const checkKey = `${repository.full_name}-${check_run.id}`;
       failedChecks.delete(checkKey);
