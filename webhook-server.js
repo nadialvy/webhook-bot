@@ -11,6 +11,9 @@ const REMINDER_INTERVAL = 60 * 60 * 1000; // 1 jam
 const failedChecks = new Map();
 
 async function sendTelegram(msg) {
+  console.log('Sending to:', CHAT_ID);
+  console.log('Token exists:', !!TELEGRAM_TOKEN);
+
   await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
